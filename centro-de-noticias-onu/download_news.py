@@ -16,10 +16,10 @@ def fetch_stories(start, end):
         url = 'http://www.un.org/spanish/News/story.asp?NewsID=' + str(x)
         r = requests.get(url, allow_redirects=False)
         print(url + ", " + str(r.status_code))
-        log.write(url + ", " + str(r.status_code) + "\r\n")
+        log.write(url + ", " + str(r.status_code) + "\n")
 
         if (r.status_code == 200):
-            article = open('data/' + str(x).zfill(5) + '.html', 'wb')
+            article = open('raw_html/' + str(x).zfill(5) + '.html', 'wb')
             article.write(r.content)
             article.close()
         
