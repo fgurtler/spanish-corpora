@@ -9,23 +9,20 @@ args = parser.parse_args()
 
 def fetch_stories(start, end):
 
-    log = open('log' + str(start).zfill(5) + "-" + str(end).zfill(5) + '.txt', 'w')
+    with open('log' + str(start).zfill(5) + "-" + str(end).zfill(5) + '.txt', 'w') as log:
 
-    for x in range(start, end):
-        
-        url = 'http://www.un.org/spanish/News/story.asp?NewsID=' + str(x)
-        r = requests.get(url, allow_redirects=False)
-        print(url + ", " + str(r.status_code))
-        log.write(url + ", " + str(r.status_code) + "\n")
+        for x in range(start, end):
+            
+            url = 'http://www.un.org/spanish/News/story.asp?NewsID=' + str(x)
+            r = requests.get(url, allow_redirects=False)
+            print(url + ", " + str(r.status_code))
+            log.write(url + ", " + str(r.status_code) + "\n")
 
-        if (r.status_code == 200):
-            article = open('raw_html/' + str(x).zfill(5) + '.html', 'wb')
-            article.write(r.content)
-            article.close()
-        
-        if (x%10 == 0):
-            log.flush()
-
-    log.close()
+            if (r.status_code == 200):
+                with open('raw_html/' + str(x).zfill(5) + '.html', 'wb') as article:
+                    article.write(r.content)
+            
+            if (x%10 == 0):
+                log.flush()
 
 fetch_stories(args.start, args.end)
