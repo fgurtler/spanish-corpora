@@ -1,12 +1,14 @@
 #!/usr/bin/python
 import argparse
 from lxml import html
-import glob, os
+import glob, os, re
     
 def get_plain_text(file_name):
     with open(file_name, encoding="utf-8") as original_html:
 	    tree = html.fromstring(original_html.read())
-	    return tree.get_element_by_id('story').text
+	    story = tree.get_element_by_id('story').text 
+	    story = re.sub("( \w{2,}\.)(\w+ )", r"\1 \2", story)
+	    return story
 
 parser = argparse.ArgumentParser(description='Reduce news articles from UN News to plain text')
 parser.add_argument('source_dir', type=str,  help='source directory containing cleaned .html')
